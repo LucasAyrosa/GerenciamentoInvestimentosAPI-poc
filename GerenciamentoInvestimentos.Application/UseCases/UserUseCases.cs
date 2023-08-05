@@ -8,9 +8,11 @@ namespace GerenciamentoInvestimentos.Application.UseCases;
 public class UserUseCases
 {
     private readonly IUserService _userService;
-    public UserUseCases(IUserService userService)
+    private readonly ITokenService _tokenService;
+    public UserUseCases(IUserService userService, ITokenService tokenService)
     {
         _userService = userService;
+        _tokenService = tokenService;
     }
 
     public CreateUserResponse CreateUser(CreateUserRequest request)
@@ -27,5 +29,14 @@ public class UserUseCases
         if (saveReturn > 0)
             return user.ToResponse();
         throw new Exception("Algo deu errado na criação do usuário");
+    }
+
+    public string Login(LoginRequest request)
+    {
+        if (request == null) throw new ArgumentNullException("Requisição inválida");
+
+        string username = _userService.UserAutentication(request.ToDomainUser());
+
+        return _tokenService.GenerateJwtToken(username);
     }
 }

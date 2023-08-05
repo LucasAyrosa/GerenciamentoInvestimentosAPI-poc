@@ -18,6 +18,7 @@ builder.Services.AddScoped<UserUseCases>();
 
 //domain services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();

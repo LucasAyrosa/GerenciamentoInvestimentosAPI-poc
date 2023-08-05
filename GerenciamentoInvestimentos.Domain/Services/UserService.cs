@@ -1,6 +1,8 @@
 ﻿using GerenciamentoInvestimentos.Domain.Entities;
+using GerenciamentoInvestimentos.Domain.Exceptions;
 using GerenciamentoInvestimentos.Domain.Interfaces.Repositories;
 using GerenciamentoInvestimentos.Domain.Interfaces.Services;
+using GerenciamentoInvestimentos.Infrastructure.Utils;
 
 namespace GerenciamentoInvestimentos.Domain.Services;
 
@@ -22,5 +24,16 @@ public class UserService : IUserService
     public long Save(User user)
     {
         return _userRepository.Create(user);
+    }
+
+    public string UserAutentication(User loginUser)
+    {
+        var dataUser = _userRepository.GetByEmail(loginUser.Email)
+            ?? throw new UnauthorizedException("Usuário ou senha errados");
+
+        if (dataUser.Password != loginUser.Password.CryptographyPassword())
+            throw new UnauthorizedException("Usuário ou senha errados");
+
+        return dataUser.Name;
     }
 }
