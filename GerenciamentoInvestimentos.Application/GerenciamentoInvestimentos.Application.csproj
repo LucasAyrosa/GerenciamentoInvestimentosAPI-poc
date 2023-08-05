@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GerenciamentoInvestimentos.Domain\GerenciamentoInvestimentos.Domain.csproj" />
+    <ProjectReference Include="..\GerenciamentoInvestimentos.Infrastructure\GerenciamentoInvestimentos.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
