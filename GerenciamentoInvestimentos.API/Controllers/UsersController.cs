@@ -1,6 +1,7 @@
 ﻿using GerenciamentoInvestimentos.Application.Requests;
 using GerenciamentoInvestimentos.Application.UseCases;
 using GerenciamentoInvestimentos.Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GerenciamentoInvestimentos.API.Controllers
