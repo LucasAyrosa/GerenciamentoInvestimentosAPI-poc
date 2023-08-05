@@ -1,6 +1,7 @@
 ﻿using GerenciamentoInvestimentos.Application.Mappers;
 using GerenciamentoInvestimentos.Application.Requests;
 using GerenciamentoInvestimentos.Application.Responses;
+using GerenciamentoInvestimentos.Domain.Entities;
 using GerenciamentoInvestimentos.Domain.Interfaces.Services;
 
 namespace GerenciamentoInvestimentos.Application.UseCases;
@@ -35,8 +36,8 @@ public class UserUseCases
     {
         if (request == null) throw new ArgumentNullException("Requisição inválida");
 
-        string username = _userService.UserAutentication(request.ToDomainUser());
+        User user = _userService.UserAutentication(request.ToDomainUser());
 
-        return _tokenService.GenerateJwtToken(username);
+        return _tokenService.GenerateJwtToken(user);
     }
 }

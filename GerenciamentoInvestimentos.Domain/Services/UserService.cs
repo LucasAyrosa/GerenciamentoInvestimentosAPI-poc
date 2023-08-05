@@ -26,7 +26,7 @@ public class UserService : IUserService
         return _userRepository.Create(user);
     }
 
-    public string UserAutentication(User loginUser)
+    public User UserAutentication(User loginUser)
     {
         var dataUser = _userRepository.GetByEmail(loginUser.Email)
             ?? throw new UnauthorizedException("Usuário ou senha errados");
@@ -34,6 +34,6 @@ public class UserService : IUserService
         if (dataUser.Password != loginUser.Password.CryptographyPassword())
             throw new UnauthorizedException("Usuário ou senha errados");
 
-        return dataUser.Name;
+        return dataUser;
     }
 }

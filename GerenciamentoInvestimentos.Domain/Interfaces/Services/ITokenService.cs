@@ -1,6 +1,8 @@
-﻿namespace GerenciamentoInvestimentos.Domain.Interfaces.Services;
+﻿using GerenciamentoInvestimentos.Domain.Entities;
+
+namespace GerenciamentoInvestimentos.Domain.Interfaces.Services;
 
 public interface ITokenService
 {
-    string GenerateJwtToken(string username);
+    string GenerateJwtToken(User user);
 }

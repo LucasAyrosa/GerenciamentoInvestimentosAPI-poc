@@ -6,5 +6,5 @@ public interface IUserService
 {
     bool HasUniqueEmail(User user);
     long Save(User user);
-    string UserAutentication(User loginUser);
+    User UserAutentication(User loginUser);
 }
