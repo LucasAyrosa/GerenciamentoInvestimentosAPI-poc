@@ -3,10 +3,12 @@ using GerenciamentoInvestimentos.Domain.Interfaces.Repositories;
 using GerenciamentoInvestimentos.Domain.Interfaces.Services;
 using GerenciamentoInvestimentos.Domain.Options;
 using GerenciamentoInvestimentos.Domain.Services;
+using GerenciamentoInvestimentos.Infrastructure.Integration;
 using GerenciamentoInvestimentos.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Refit;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,15 +20,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Insira o token JWT",
         Name = "Authorization",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
     });
 
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -37,20 +39,33 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] { }
+            Array.Empty<string>()
         }
     });
 });
 
 //use cases
 builder.Services.AddScoped<UserUseCases>();
+builder.Services.AddScoped<StockUseCases>();
+builder.Services.AddScoped<OperationUseCases>();
 
 //domain services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPortifolioService, PortifolioService>();
+builder.Services.AddScoped<IOperationService, OperationService>();
 
 //repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPortifolioRepository, PortifolioRepository>();
+builder.Services.AddScoped<IOperationRepository, OperationRepository>();
+
+//integrations
+builder.Services.AddRefitClient<IBrapiIntegration>()
+    .ConfigureHttpClient(config =>
+    {
+        config.BaseAddress = new Uri("https://brapi.dev");
+    });
 
 builder.Services.AddAuthentication(options =>
 {
