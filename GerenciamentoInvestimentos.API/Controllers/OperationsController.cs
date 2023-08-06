@@ -2,7 +2,6 @@
 using GerenciamentoInvestimentos.Application.UseCases;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 
 namespace GerenciamentoInvestimentos.API.Controllers;

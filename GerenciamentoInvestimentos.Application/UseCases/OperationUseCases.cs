@@ -31,6 +31,8 @@ public class OperationUseCases
         var operationRequest = request.ToDomain(portifolioId: portifolioId);
         _operationService.Create(operationRequest);
 
+        // TODO: implementar mensageria para processamento de posição assincrona
+
         return new()
         {
             Ticket = portifolioRequest.Ticket,
