@@ -12,9 +12,11 @@ namespace GerenciamentoInvestimentos.API.Controllers;
 public class OperationsController : ControllerBase
 {
     private readonly OperationUseCases _useCases;
-    public OperationsController(OperationUseCases useCases)
+    private readonly ILogger<OperationsController> _logger;
+    public OperationsController(OperationUseCases useCases, ILogger<OperationsController> logger)
     {
         _useCases = useCases;
+        _logger = logger;
     }
 
     [HttpPost]
@@ -23,8 +25,12 @@ public class OperationsController : ControllerBase
         try
         {
             if (!long.TryParse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value, out long userId))
+            {
+                _logger.LogInformation("Usuário não autenticado");
                 return Unauthorized();
+            }
 
+            _logger.LogInformation("Usuário autenticado");
             var operation = (request.Type) switch
             {
                 Domain.Enums.EOperationType.Buy => _useCases.InsertBuyOperation(request, userId),
@@ -32,14 +38,17 @@ public class OperationsController : ControllerBase
                 _ => throw new InvalidOperationException("Tipo de operação não é válida")
             };
 
+            _logger.LogInformation("Fim de processamento. Operação criada com sucesso");
             return CreatedAtRoute("", operation);
         }
         catch (InvalidOperationException ex)
         {
+            _logger.LogInformation($"Erro no processamento. {ex.Message}");
             return BadRequest(ex.Message);
         }
         catch (Exception ex)
         {
+            _logger.LogInformation($"Erro no processamento. {ex.Message}");
             return StatusCode(500, ex.Message);
         }
     }
