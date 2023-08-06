@@ -10,8 +10,21 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Refit;
 using System.Text;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var logConfig = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/api.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Services.AddLogging(logBuilder =>
+{
+    logBuilder.ClearProviders();
+    logBuilder.AddConfiguration(builder.Configuration.GetSection("Logging"));
+    logBuilder.AddSerilog(logConfig);
+});
 
 // Add services to the container.
 
