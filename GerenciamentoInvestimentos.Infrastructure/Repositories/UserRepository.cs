@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
         return users.ToDomain();
     }
 
-    public Domain.Entities.User Get(int id)
+    public Domain.Entities.User Get(long id)
     {
         using NpgsqlConnection conn = GetConn();
 

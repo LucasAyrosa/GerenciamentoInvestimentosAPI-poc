@@ -36,4 +36,9 @@ public class UserService : IUserService
 
         return dataUser;
     }
+
+    public User GetUser(long id)
+    {
+        return _userRepository.Get(id);
+    }
 }

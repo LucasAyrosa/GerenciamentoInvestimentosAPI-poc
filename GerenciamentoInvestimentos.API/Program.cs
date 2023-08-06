@@ -47,13 +47,18 @@ builder.Services.AddSwaggerGen(options =>
 //use cases
 builder.Services.AddScoped<UserUseCases>();
 builder.Services.AddScoped<StockUseCases>();
+builder.Services.AddScoped<OperationUseCases>();
 
 //domain services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IPortifolioService, PortifolioService>();
+builder.Services.AddScoped<IOperationService, OperationService>();
 
 //repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IPortifolioRepository, PortifolioRepository>();
+builder.Services.AddScoped<IOperationRepository, OperationRepository>();
 
 //integrations
 builder.Services.AddRefitClient<IBrapiIntegration>()
